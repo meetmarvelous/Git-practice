@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RIDR — From Pickup to Doorstep</title>
+
+    <style>
+        /* =========================
+           1. GENERAL STYLING
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --red: #D92F36;
+            --red-dark: #B91F28;
+            --yellow: #FFD447;
+            --cream: #FFFDF8;
+            --light: #F7F4ED;
+            --dark: #20201F;
+            --muted: #77746F;
+            --border: #EAE5DA;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--cream);
+            color: var(--dark);
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .container {
+            width: min(1120px, 90%);
+            margin: 0 auto;
+        }
+
+
+        /* =========================
+           2. NAVIGATION BAR
+        ========================= */
+
+        header {
+            background: var(--cream);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar {
+            min-height: 82px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .logo span {
+            color: var(--red);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--red);
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 22px;
+            font-weight: 700;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .button-red {
+            background: var(--red);
+            color: white;
+        }
+
+        .button-red:hover {
+            background: var(--red-dark);
+        }
+
+        .button-yellow {
+            background: var(--yellow);
+            color: var(--dark);
+        }
+
+
+        /* =========================
+           3. HERO SECTION
+        ========================= */
+
+        .hero {
+            padding: 90px 0 100px;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            align-items: center;
+            gap: 65px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: #FCE9E8;
+            color: var(--red);
+            padding: 7px 13px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 5.5vw, 70px);
+            line-height: 1.06;
+            letter-spacing: -3px;
+            max-width: 600px;
+        }
+
+        .hero h1 span {
+            color: var(--red);
+        }
+
+        .hero-description {
+            color: var(--muted);
+            font-size: 17px;
+            max-width: 450px;
+            margin: 24px 0 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .text-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 5px;
+            font-weight: 700;
+        }
+
+        .text-button:hover {
+            color: var(--red);
+        }
+
+        .hero-note {
+            margin-top: 28px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           4. HERO ILLUSTRATION
+        ========================= */
+
+        .hero-visual {
+            position: relative;
+            min-height: 410px;
+            background: var(--yellow);
+            border-radius: 28px;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .visual-circle {
+            position: absolute;
+            width: 270px;
+            height: 270px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .parcel-card {
+            position: relative;
+            z-index: 1;
+            width: 240px;
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 18px 45px rgba(80, 55, 0, 0.12);
+            transform: rotate(-4deg);
+        }
+
+        .parcel-icon {
+            width: 66px;
+            height: 66px;
+            background: #FCE9E8;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            font-size: 34px;
+            margin-bottom: 22px;
+        }
+
+        .parcel-card h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .parcel-card p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .route {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .route-line {
+            height: 45px;
+            width: 2px;
+            background: var(--red);
+            margin-left: 7px;
+            position: relative;
+        }
+
+        .route-line::before,
+        .route-line::after {
+            content: "";
+            position: absolute;
+            left: -5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--red);
+        }
+
+        .route-line::before {
+            top: 0;
+        }
+
+        .route-line::after {
+            bottom: 0;
+        }
+
+        .route-text {
+            font-size: 12px;
+        }
+
+        .route-text p {
+            margin-bottom: 5px;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .floating-label {
+            position: absolute;
+            z-index: 2;
+            background: white;
+            padding: 13px 17px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .label-top {
+            top: 40px;
+            right: -12px;
+        }
+
+        .label-bottom {
+            bottom: 35px;
+            left: -12px;
+        }
+
+
+        /* =========================
+           5. BENEFITS STRIP
+        ========================= */
+
+        .benefits {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 25px 0;
+        }
+
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .benefit-icon {
+            font-size: 24px;
+        }
+
+        .benefit h3 {
+            font-size: 14px;
+        }
+
+        .benefit p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           6. HOW IT WORKS
+        ========================= */
+
+        .section {
+            padding: 95px 0;
+        }
+
+        .section-heading {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+
+        .section-heading .eyebrow {
+            margin-bottom: 15px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(30px, 4vw, 43px);
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            margin-top: 15px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .step-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .step-number {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--yellow);
+            font-weight: 900;
+            margin-bottom: 25px;
+        }
+
+        .step-card h3 {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+
+        /* =========================
+           7. WHO RIDR SERVES
+        ========================= */
+
+        .audience {
+            background: var(--light);
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .audience-card {
+            padding: 40px;
+            border-radius: 20px;
+            background: white;
+            border: 1px solid var(--border);
+        }
+
+        .audience-card.business {
+            background: var(--red);
+            color: white;
+            border-color: var(--red);
+        }
+
+        .audience-icon {
+            font-size: 35px;
+            margin-bottom: 20px;
+        }
+
+        .audience-card h3 {
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+
+        .audience-card p {
+            font-size: 15px;
+            margin-bottom: 25px;
+            color: var(--muted);
+        }
+
+        .audience-card.business p {
+            color: #FFE5E5;
+        }
+
+        .audience-link {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .audience-link:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           8. CALL TO ACTION
+        ========================= */
+
+        .cta {
+            padding: 80px 0;
+        }
+
+        .cta-box {
+            background: var(--yellow);
+            border-radius: 24px;
+            padding: 55px 30px;
+            text-align: center;
+        }
+
+        .cta-box h2 {
+            font-size: clamp(30px, 4vw, 43px);
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+        }
+
+        .cta-box p {
+            margin: 15px auto 25px;
+            max-width: 480px;
+            color: #514726;
+        }
+
+        .cta-box .button {
+            background: var(--dark);
+            color: white;
+        }
+
+        .cta-box .button:hover {
+            background: #393936;
+        }
+
+
+        /* =========================
+           9. FOOTER
+        ========================= */
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 45px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .footer-logo span {
+            color: var(--yellow);
+        }
+
+        .footer-description {
+            color: #B8B6B0;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: #D7D5CF;
+        }
+
+        .footer-links a:hover {
+            color: var(--yellow);
+        }
+
+        .copyright {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #41413E;
+            color: #A9A7A0;
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           10. DELIVERY REQUEST FORM
+        ========================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(20, 20, 20, 0.65);
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--cream);
+            width: min(480px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 18px;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 25px;
+        }
+
+        .modal-header p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .close-modal {
+            border: none;
+            background: transparent;
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D9D3C8;
+            border-radius: 8px;
+            background: white;
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: 2px solid var(--yellow);
+            border-color: var(--red);
+        }
+
+        .form-group textarea {
+            min-height: 75px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            width: 100%;
+        }
+
+        .form-note {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 12px;
+        }
+
+        .confirmation {
+            display: none;
+            background: #E7F4E9;
+            border: 1px solid #B8DDBE;
+            color: #245D31;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .confirmation.show {
+            display: block;
+        }
+
+
+        /* =========================
+           11. MOBILE RESPONSIVENESS
+        ========================= */
+
+        @media (max-width: 800px) {
+            .navbar {
+                padding: 18px 0;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                gap: 22px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .navbar > .button {
+                padding: 11px 14px;
+                font-size: 12px;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 45px;
+            }
+
+            .hero-visual {
+                min-height: 350px;
+                margin: 0 12px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefit-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .benefit {
+                justify-content: flex-start;
+            }
+
+            .audience-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 70px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .hero-visual {
+                min-height: 310px;
+                padding: 20px;
+            }
+
+            .parcel-card {
+                width: 215px;
+                padding: 22px;
+            }
+
+            .label-top {
+                right: -5px;
+                top: 20px;
+            }
+
+            .label-bottom {
+                left: -5px;
+                bottom: 20px;
+            }
+
+            .audience-card {
+                padding: 28px;
+            }
+
+            .cta-box {
+                padding: 40px 22px;
+            }
+
+            .footer-content {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <header>
+        <div class="container navbar">
+
+            <a href="#home" class="logo" aria-label="RIDR home">
+                RIDR<span>.</span>
+            </a>
+
+            <nav aria-label="Main navigation">
+                <ul class="nav-links">
+                    <li><a href="#how-it-works">How it works</a></li>
+                    <li><a href="#individuals">For individuals</a></li>
+                    <li><a href="#businesses">For businesses</a></li>
+                </ul>
+            </nav>
+
+            <button class="button button-red open-request">
+                Request delivery ↗
+            </button>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- HERO SECTION -->
+
+        <section class="hero" id="home">
+            <div class="container hero-grid">
+
+                <div class="hero-content">
+
+                    <div class="eyebrow">
+                        Your goods. Our riders.
+                    </div>
+
+                    <h1>
+                        From pickup to doorstep,
+                        <span>RIDR gets it there.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Sending a package across town?
+                        RIDR makes local deliveries simpler for
+                        everyday people and growing businesses.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <button class="button button-red open-request">
+                            Request a delivery →
+                        </button>
+
+                        <a href="#how-it-works" class="text-button">
+                            See how it works ↓
+                        </a>
+
+                    </div>
+
+                    <p class="hero-note">
+                        For personal packages, food orders and business deliveries.
+                    </p>
+
+                </div>
+
+
+                <!-- CSS-BASED PACKAGE ILLUSTRATION -->
+
+                <div class="hero-visual">
+
+                    <div class="visual-circle"></div>
+
+                    <div class="floating-label label-top">
+                        📦 One package at a time
+                    </div>
+
+                    <div class="parcel-card">
+
+                        <div class="parcel-icon">📦</div>
+
+                        <h3>Your package.</h3>
+
+                        <p>Ready for its next destination.</p>
+
+                        <div class="route">
+
+                            <div class="route-line"></div>
+
+                            <div class="route-text">
+                                <p>Pickup location</p>
+                                <p>Delivery destination</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="floating-label label-bottom">
+                        🛵 Delivery made simpler
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- BENEFITS -->
+
+        <section class="benefits">
+            <div class="container benefit-grid">
+
+                <div class="benefit">
+                    <div class="benefit-icon">📍</div>
+                    <div>
+                        <h3>Local deliveries</h3>
+                        <p>Designed for getting goods across town.</p>
+                    </div>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">🛵</div>
+                    <div>
+                        <h3>Rider-focused</h3>
+                        <p>A delivery service built around your package.</p>
+                    </div>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">🏪</div>
+                    <div>
+                        <h3>Business-friendly</h3>
+                        <p>For sellers, vendors and growing businesses.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- HOW IT WORKS -->
+
+        <section class="section" id="how-it-works">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div class="eyebrow">Simple by design</div>
+
+                    <h2>Three steps. One less thing to worry about.</h2>
+
+                    <p>
+                        Getting something delivered shouldn't be complicated.
+                        RIDR aims to keep the process straightforward.
+                    </p>
+
+                </div>
+
+
+                <div class="steps-grid">
+
+                    <article class="step-card">
+
+                        <div class="step-number">01</div>
+
+                        <h3>Tell us what you're sending</h3>
+
+                        <p>
+                            Provide your pickup location, destination
+                            and a few details about your package.
+                        </p>
+
+                    </article>
+
+
+                    <article class="step-card">
+
+                        <div class="step-number">02</div>
+
+                        <h3>Arrange your rider</h3>
+
+                        <p>
+                            The intended service connects your delivery
+                            request with an available nearby rider.
+                        </p>
+
+                    </article>
+
+
+                    <article class="step-card">
+
+                        <div class="step-number">03</div>
+
+                        <h3>Get it delivered</h3>
+
+                        <p>
+                            Your rider collects the package and takes
+                            it to the destination you provided.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INDIVIDUALS AND BUSINESSES -->
+
+        <section class="section audience" id="individuals">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div class="eyebrow">Made for real life</div>
+
+                    <h2>Whatever you're sending, start with RIDR.</h2>
+
+                    <p>
+                        From the occasional package to the daily demands
+                        of running a small business.
+                    </p>
+
+                </div>
+
+
+                <div class="audience-grid">
+
+                    <article class="audience-card">
+
+                        <div class="audience-icon">🎁</div>
+
+                        <h3>For everyday life.</h3>
+
+                        <p>
+                            Sending a gift, forgotten item, document
+                            or personal package? Make getting it across
+                            town one less thing to worry about.
+                        </p>
+
+                        <a href="#home" class="audience-link open-request">
+                            Send a package →
+                        </a>
+
+                    </article>
+
+
+                    <article class="audience-card business" id="businesses">
+
+                        <div class="audience-icon">📦</div>
+
+                        <h3>For your business.</h3>
+
+                        <p>
+                            Food vendors, online sellers and local shops:
+                            delivery is part of the customer experience.
+                            Give your orders a clearer route to their destination.
+                        </p>
+
+                        <a href="#home" class="audience-link open-request">
+                            Plan a delivery →
+                        </a>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CALL TO ACTION -->
+
+        <section class="cta">
+
+            <div class="container">
+
+                <div class="cta-box">
+
+                    <h2>Your next delivery starts here.</h2>
+
+                    <p>
+                        Tell us where your package needs to go.
+                        Let's make local delivery simpler.
+                    </p>
+
+                    <button class="button open-request">
+                        Request a delivery →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div>
+                    <a href="#home" class="footer-logo">
+                        RIDR<span>.</span>
+                    </a>
+
+                    <p class="footer-description">
+                        From pickup to doorstep, RIDR gets it there.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <a href="#how-it-works">How it works</a>
+                    <a href="#individuals">Individuals</a>
+                    <a href="#businesses">Businesses</a>
+                    <a href="#home">Back to top ↑</a>
+                </div>
+
+            </div>
+
+            <div class="copyright">
+                © <span id="year"></span> RIDR. A delivery service concept.
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- DELIVERY REQUEST MODAL -->
+
+    <div
+        class="modal"
+        id="request-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        aria-hidden="true"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+                    <h2 id="modal-title">Request a delivery</h2>
+
+                    <p>
+                        Enter your delivery details to try the demo.
+                    </p>
+                </div>
+
+                <button
+                    class="close-modal"
+                    id="close-modal"
+                    aria-label="Close delivery form"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <form id="delivery-form">
+
+                <div class="form-group">
+                    <label for="customer-name">Your name</label>
+
+                    <input
+                        type="text"
+                        id="customer-name"
+                        name="customerName"
+                        placeholder="Enter your name"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="customer-phone">Phone number</label>
+
+                    <input
+                        type="tel"
+                        id="customer-phone"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        autocomplete="tel"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="pickup">Pickup location</label>
+
+                    <input
+                        type="text"
+                        id="pickup"
+                        name="pickup"
+                        placeholder="Where should the rider collect it?"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="destination">Delivery destination</label>
+
+                    <input
+                        type="text"
+                        id="destination"
+                        name="destination"
+                        placeholder="Where should it be delivered?"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="package-type">What are you sending?</label>
+
+                    <select id="package-type" name="packageType" required>
+                        <option value="">Choose a package type</option>
+                        <option value="Documents">Documents</option>
+                        <option value="Food">Food or platters</option>
+                        <option value="Clothing">Clothing or fashion items</option>
+                        <option value="Small package">Small package</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="notes">Additional details (optional)</label>
+
+                    <textarea
+                        id="notes"
+                        name="notes"
+                        placeholder="Anything else the rider should know?"
+                    ></textarea>
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="button button-red submit-button"
+                >
+                    Submit demo request →
+                </button>
+
+                <p class="form-note">
+                    Demo only. This form does not contact a rider,
+                    book a delivery or transmit your information.
+                </p>
+
+                <div
+                    class="confirmation"
+                    id="confirmation"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        // Automatically display the current year.
+
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+
+
+        // Find the form and modal elements.
+
+        const modal = document.getElementById("request-modal");
+
+        const closeButton = document.getElementById("close-modal");
+
+        const deliveryForm = document.getElementById("delivery-form");
+
+        const confirmation = document.getElementById("confirmation");
+
+
+        // Open the delivery form when a request button is clicked.
+
+        const requestButtons = document.querySelectorAll(".open-request");
+
+        requestButtons.forEach(function(button) {
+
+            button.addEventListener("click", function(event) {
+
+                event.preventDefault();
+
+                modal.classList.add("open");
+
+                modal.setAttribute("aria-hidden", "false");
+
+                confirmation.classList.remove("show");
+
+            });
+
+        });
+
+
+        // Close the form when the X button is clicked.
+
+        closeButton.addEventListener("click", function() {
+
+            modal.classList.remove("open");
+
+            modal.setAttribute("aria-hidden", "true");
+
+        });
+
+
+        // Close the form when someone clicks outside it.
+
+        modal.addEventListener("click", function(event) {
+
+            if (event.target === modal) {
+
+                modal.classList.remove("open");
+
+                modal.setAttribute("aria-hidden", "true");
+
+            }
+
+        });
+
+
+        // Close the form with the Escape key.
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "Escape") {
+
+                modal.classList.remove("open");
+
+                modal.setAttribute("aria-hidden", "true");
+
+            }
+
+        });
+
+
+        // Handle the demo form submission.
+
+        deliveryForm.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const customerName =
+                document.getElementById("customer-name").value.trim();
+
+            confirmation.textContent =
+                "Thanks, " + customerName +
+                "! Your demo request has been completed. " +
+                "No real delivery has been booked.";
+
+            confirmation.classList.add("show");
+
+        });
+
+    </script>
+
+</body>
+</html>

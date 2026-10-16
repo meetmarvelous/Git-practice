@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FocusFlow | Your Productivity Space</title>
+
+    <style>
+        /* GENERAL STYLING */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #E5D5F5;;
+            color: #292638;
+            font-family: Arial, sans-serif;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+
+        /* NAVIGATION */
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 8%;
+            background-color: white;
+            border-bottom: 1px solid #EAE7F1;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #8B78E6;
+        }
+
+        .nav-label {
+            color: #8A8798;
+            font-size: 13px;
+        }
+
+
+        /* MAIN LAYOUT */
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 45px 25px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .welcome p {
+            color: #8A8798;
+            font-size: 14px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 25px;
+        }
+
+
+        /* CARDS */
+
+        .card {
+            background: #F7F0FC;
+            border: 1px solid #EAE7F1;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .card-description {
+            color: #8A8798;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* TASK INPUT */
+
+        .task-input-row {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .task-input-row input {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid #EAE7F1;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .task-input-row input:focus {
+            border-color: #8B78E6;
+        }
+
+        .primary-button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+            background-color: #8B78E6;
+            color: white;
+        }
+
+        .primary-button:hover {
+            background-color: #7560D1;
+        }
+
+
+        /* TASK LIST */
+
+        #task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #F0EDF5;
+        }
+
+        .task-item input {
+            accent-color: #8B78E6;
+            width: 17px;
+            height: 17px;
+        }
+
+        .task-name {
+            flex: 1;
+            overflow-wrap: anywhere;
+            font-size: 14px;
+        }
+
+        .task-item.completed .task-name {
+            text-decoration: line-through;
+            color: #A7A3B2;
+        }
+
+        .delete-button {
+            border: none;
+            background: none;
+            color: #A7A3B2;
+            font-size: 18px;
+        }
+
+        .delete-button:hover {
+            color: #D9534F;
+        }
+
+
+        /* FOCUS TIMER */
+
+        .timer-card {
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 56px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin: 30px 0 10px;
+        }
+
+        .timer-label {
+            color: #8A8798;
+            font-size: 13px;
+        }
+
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .secondary-button {
+            border: 1px solid #EAE7F1;
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px 18px;
+            color: #292638;
+        }
+
+        .secondary-button:hover {
+            background-color: #F8F7FC;
+        }
+
+
+        /* PROGRESS */
+
+        .progress-card {
+            margin-top: 25px;
+        }
+
+        .progress-heading {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .progress-heading h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        #progress-text {
+            color: #8B78E6;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .progress-track {
+            height: 9px;
+            background-color: #EEEAF8;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #8B78E6;
+            border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+
+        #progress-message {
+            color: #8A8798;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #8A8798;
+            font-size: 12px;
+        }
+
+
+        /* MOBILE LAYOUT */
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 20px 6%;
+            }
+
+            main {
+                padding: 30px 18px;
+            }
+
+            .welcome h1 {
+                font-size: 27px;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .timer-display {
+                font-size: 48px;
+            }
+
+            .task-input-row {
+                flex-wrap: wrap;
+            }
+
+            .task-input-row input {
+                flex-basis: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+        <div class="logo">focus<span>flow.</span></div>
+
+        <div class="nav-label">
+            Your personal workspace
+        </div>
+    </nav>
+
+
+    <main>
+
+        <!-- WELCOME -->
+
+        <section class="welcome">
+
+            <h1>Your space to focus.</h1>
+
+            <p>
+                One step at a time. Make today count.
+            </p>
+
+        </section>
+
+
+        <div class="dashboard">
+
+            <!-- TASK MANAGER -->
+
+            <section class="card">
+
+                <h2>Today's tasks</h2>
+
+                <p class="card-description">
+                    Write down what you want to accomplish.
+                </p>
+
+                <form class="task-input-row" id="task-form">
+
+                    <input
+                        type="text"
+                        id="task-input"
+                        placeholder="Add a new task..."
+                        aria-label="New task"
+                        maxlength="120"
+                        required
+                    >
+
+                    <button class="primary-button" type="submit">
+                        + Add task
+                    </button>
+
+                </form>
+
+                <ul id="task-list"></ul>
+
+            </section>
+
+
+            <!-- TIMER -->
+
+            <section class="card timer-card">
+
+                <h2>Focus timer</h2>
+
+                <p class="card-description">
+                    Give one thing your full attention.
+                </p>
+
+                <div class="timer-display" id="timer">
+                    25:00
+                </div>
+
+                <div class="timer-label" id="timer-status">
+                    Ready when you are.
+                </div>
+
+                <div class="timer-buttons">
+
+                    <button class="primary-button" id="start-button">
+                        Start
+                    </button>
+
+                    <button class="secondary-button" id="reset-button">
+                        Reset
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <section class="card progress-card">
+
+            <div class="progress-heading">
+
+                <h2>Your daily progress</h2>
+
+                <span id="progress-text">0% complete</span>
+
+            </div>
+
+            <div
+                class="progress-track"
+                role="progressbar"
+                aria-label="Task completion"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                id="progress-track"
+            >
+                <div id="progress-bar"></div>
+            </div>
+
+            <p id="progress-message">
+                Add a task and take the first step.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        Built for better days. © 2026 FocusFlow.
+    </footer>
+
+
+    <script>
+
+        /* TASK MANAGER */
+
+        const taskForm = document.getElementById("task-form");
+        const taskInput = document.getElementById("task-input");
+        const taskList = document.getElementById("task-list");
+
+        const progressText = document.getElementById("progress-text");
+        const progressBar = document.getElementById("progress-bar");
+        const progressMessage = document.getElementById("progress-message");
+        const progressTrack = document.getElementById("progress-track");
+
+
+        // Add a new task when the form is submitted.
+
+        taskForm.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const taskName = taskInput.value.trim();
+
+            if (taskName === "") {
+                return;
+            }
+
+            createTask(taskName);
+
+            taskInput.value = "";
+
+            updateProgress();
+
+        });
+
+
+        // Create the task and its controls.
+
+        function createTask(name) {
+
+            const taskItem = document.createElement("li");
+
+            taskItem.className = "task-item";
+
+            const checkbox = document.createElement("input");
+
+            checkbox.type = "checkbox";
+            checkbox.setAttribute("aria-label", "Mark task complete");
+
+            const taskName = document.createElement("span");
+
+            taskName.className = "task-name";
+            taskName.textContent = name;
+
+            const deleteButton = document.createElement("button");
+
+            deleteButton.className = "delete-button";
+            deleteButton.textContent = "×";
+            deleteButton.type = "button";
+            deleteButton.setAttribute("aria-label", "Delete task");
+
+            checkbox.addEventListener("change", function() {
+
+                taskItem.classList.toggle("completed", checkbox.checked);
+
+                updateProgress();
+
+            });
+
+            deleteButton.addEventListener("click", function() {
+
+                taskItem.remove();
+
+                updateProgress();
+
+            });
+
+            taskItem.appendChild(checkbox);
+            taskItem.appendChild(taskName);
+            taskItem.appendChild(deleteButton);
+
+            taskList.appendChild(taskItem);
+
+        }
+
+
+        // Update the progress bar.
+
+        function updateProgress() {
+
+            const tasks = taskList.querySelectorAll(".task-item");
+
+            const completedTasks = taskList.querySelectorAll(
+                ".task-item input[type='checkbox']:checked"
+            );
+
+            const total = tasks.length;
+            const completed = completedTasks.length;
+
+            let percentage = 0;
+
+            if (total > 0) {
+                percentage = Math.round((completed / total) * 100);
+            }
+
+            progressText.textContent = percentage + "% complete";
+
+            progressBar.style.width = percentage + "%";
+
+            progressTrack.setAttribute("aria-valuenow", percentage);
+
+            if (total === 0) {
+
+                progressMessage.textContent =
+                    "Add a task and take the first step.";
+
+            } else if (percentage === 100) {
+
+                progressMessage.textContent =
+                    "Amazing! You've completed every task.";
+
+            } else {
+
+                progressMessage.textContent =
+                    completed + " of " + total + " tasks completed. Keep going!";
+
+            }
+
+        }
+
+
+        /* FOCUS TIMER */
+
+        const timerDisplay = document.getElementById("timer");
+        const timerStatus = document.getElementById("timer-status");
+
+        const startButton = document.getElementById("start-button");
+        const resetButton = document.getElementById("reset-button");
+
+        const focusDuration = 25 * 60;
+
+        let timeLeft = focusDuration;
+        let timerInterval = null;
+
+
+        // Display the time as minutes and seconds.
+
+        function displayTime() {
+
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            timerDisplay.textContent =
+                String(minutes).padStart(2, "0") + ":" +
+                String(seconds).padStart(2, "0");
+
+        }
+
+
+        // Start or pause the timer.
+
+        startButton.addEventListener("click", function() {
+
+            if (timerInterval !== null) {
+
+                clearInterval(timerInterval);
+
+                timerInterval = null;
+
+                startButton.textContent = "Resume";
+
+                timerStatus.textContent = "Paused. Take your time.";
+
+                return;
+
+            }
+
+            if (timeLeft <= 0) {
+                return;
+            }
+
+            startButton.textContent = "Pause";
+
+            timerStatus.textContent = "You're in focus mode.";
+
+            timerInterval = setInterval(function() {
+
+                timeLeft--;
+
+                displayTime();
+
+                if (timeLeft <= 0) {
+
+                    clearInterval(timerInterval);
+
+                    timerInterval = null;
+
+                    startButton.textContent = "Start";
+
+                    timerStatus.textContent = "Session complete! Well done.";
+
+                }
+
+            }, 1000);
+
+        });
+
+
+        // Reset the timer to 25 minutes.
+
+        resetButton.addEventListener("click", function() {
+
+            clearInterval(timerInterval);
+
+            timerInterval = null;
+
+            timeLeft = focusDuration;
+
+            displayTime();
+
+            startButton.textContent = "Start";
+
+            timerStatus.textContent = "Ready when you are.";
+
+        });
+
+
+    </script>
+
+</body>
+
+</html>
